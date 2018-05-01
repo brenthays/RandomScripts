@@ -28,9 +28,9 @@ select z.property_id, z.property_name, count(distinct z.email) as total_apps fro
   where a.date_arrival between @arrivalMin and @arrivalMax
   and a.is_deleted=0
   and a.date_created < @before
-  -- and a.user_id != 11
-  -- and a.user_id != 5
-  -- and a.user_id != 666
+  and a.user_id != 11
+  and a.user_id != 5
+  and a.user_id != 666
 ) z
 
 group by z.property_id
