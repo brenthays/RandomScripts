@@ -7,7 +7,6 @@ set @minStudents = 200;
 set @distanceMax = 20;
 
 select
-
     x.name, x.city, x.state, x.students,
     x.total_properties, x.ach_properties, x.ca_properties, x.cardinal_properties,
 
@@ -16,15 +15,18 @@ select
 
 from (
 
-    select z.id, z.name, z.city, z.state, z.students,
-    count(distinct z.p_id) as total_properties,
-    count(distinct z.p_ach_id) as ach_properties,
-    count(distinct z.p_ca_id) as ca_properties,
-    count(distinct z.p_car_id) as cardinal_properties
+    select
+        z.id, z.name, z.city, z.state, z.students,
+        count(distinct z.p_id) as total_properties,
+        count(distinct z.p_ach_id) as ach_properties,
+        count(distinct z.p_ca_id) as ca_properties,
+        count(distinct z.p_car_id) as cardinal_properties
 
     from (
 
-        select s.id, s.name, s.city, s.state, s.students, p.id as p_id, p_ach.id as p_ach_id, p_ca.id as p_ca_id, p_car.id as p_car_id
+        select
+            s.id, s.name, s.city, s.state, s.students,
+            p.id as p_id, p_ach.id as p_ach_id, p_ca.id as p_ca_id, p_car.id as p_car_id
 
         from schools s
 
