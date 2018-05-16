@@ -3,7 +3,7 @@
  *
  */
 
-set @minStudents = 200;
+set @minStudents = 25;
 set @distanceMax = 20;
 
 select
