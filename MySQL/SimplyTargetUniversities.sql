@@ -7,8 +7,11 @@ set @minStudents = 25;
 set @distanceMax = 20;
 
 select
-    x.name, x.city, x.state, x.students,
+    x.id as 'school_id', x.name, x.city, x.state, x.students,
     x.total_properties, x.ach_properties, x.ca_properties, x.cardinal_properties,
+    x.average_price_per_month,
+
+    (x.average_price_per_month/30*1.45) as average_price_per_night,
 
     /* priority balances the size of program and how many properties we have near the university */
     round((x.students / 100) * (x.total_properties * .6)) as priority
@@ -20,13 +23,15 @@ from (
         count(distinct z.p_id) as total_properties,
         count(distinct z.p_ach_id) as ach_properties,
         count(distinct z.p_ca_id) as ca_properties,
-        count(distinct z.p_car_id) as cardinal_properties
+        count(distinct z.p_car_id) as cardinal_properties,
+        AVG(z.price_per_month) as average_price_per_month
 
     from (
 
         select
             s.id, s.name, s.city, s.state, s.students,
-            p.id as p_id, p_ach.id as p_ach_id, p_ca.id as p_ca_id, p_car.id as p_car_id
+            p.id as p_id, p_ach.id as p_ach_id, p_ca.id as p_ca_id, p_car.id as p_car_id,
+            p.price_per_month
 
         from schools s
 
