@@ -1,10 +1,10 @@
 /**
  * Query uses dump of all US universities, the size of their international program, and available properties to find universities to target
  *
+ * minstudents 25
+ * max distance 20
+ * occupancy max .97
  */
-
-set @minStudents = 25;
-set @distanceMax = 20;
 
 select
     x.id as 'school_id', x.name, x.city, x.state, x.students,
@@ -41,7 +41,8 @@ from (
             * cos( radians( p.latitude) )
             * cos( radians( p.longitude ) - radians( s.longitude ) )
             + sin( radians( s.latitude ) )
-            * sin( radians( p.latitude ) ) ) ) <= @distanceMax
+            * sin( radians( p.latitude ) ) ) ) <= 20
+        and p.occupancy < .97
 
         /* total number of properties within distance to school with manager_id 3 */
         left join properties p_ach
@@ -50,7 +51,8 @@ from (
             * cos( radians( p_ach.latitude) )
             * cos( radians( p_ach.longitude ) - radians( s.longitude ) )
             + sin( radians( s.latitude ) )
-            * sin( radians( p_ach.latitude ) ) ) ) <= @distanceMax
+            * sin( radians( p_ach.latitude ) ) ) ) <= 20
+        and p_ach.occupancy < .97
 
         /* total number of properties within distance to school with manager_id 2 */
         left join properties p_ca
@@ -59,7 +61,8 @@ from (
             * cos( radians( p_ca.latitude) )
             * cos( radians( p_ca.longitude ) - radians( s.longitude ) )
             + sin( radians( s.latitude ) )
-            * sin( radians( p_ca.latitude ) ) ) ) <= @distanceMax
+            * sin( radians( p_ca.latitude ) ) ) ) <= 20
+        and p_ca.occupancy < .97
 
         /* total number of properties within distance to school with manager_id 1 */
         left join properties p_car
@@ -68,9 +71,10 @@ from (
             * cos( radians( p_car.latitude) )
             * cos( radians( p_car.longitude ) - radians( s.longitude ) )
             + sin( radians( s.latitude ) )
-            * sin( radians( p_car.latitude ) ) ) ) <= @distanceMax
+            * sin( radians( p_car.latitude ) ) ) ) <= 20
+        and p_car.occupancy < .97
 
-        where s.students >= @minStudents
+        where s.students >= 25
 
     ) z
 
